@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Product Manager</title>
+</head>
+<body>
+<div align="center">
+    <h1>Users List</h1>
+    <a href="">Return</a>
+    <br/><br/>
+    <table border="1" cellpadding="10">
+        <thead>
+        <th>Job ID</th>
+        <th>Job Role</th>
+        <th>Company Name</th>
+        <th>Start Date</th><
+        <th>End Date</th>
+        <!--<th>Actions</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${jobs}">
+            <td th:text="${c.id}">User ID</td>
+            <td th:text="${c.job_role}">Name</td>
+            <td th:text="${c.company_name}">Email</td>
+            <td th:text="${c.start_date}">Made in</td><
+            <td th:text="${c.end_date}">Price</td>
+            <!--<td>
+                <a th:href="@{'/edit/' + ${c.id}}">Edit</a>
+                &nbsp;&nbsp;&nbsp;
+                <a th:href="@{'/delete/' + ${c.id}}">Delete</a>
+        </tr>-->
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

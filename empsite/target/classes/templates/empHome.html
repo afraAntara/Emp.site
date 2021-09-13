@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<title>Emp.site</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+    .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+    .fa-anchor,.fa-coffee {font-size:200px}
+</style>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+    <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">EMP.SITE home</a>
+        <div sec:authorize="hasAnyAuthority('Admin')">
+        <!--<a href="/listallusers" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" >See all</a>-->
+        <a href="/registercompany" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Add Company</a>
+        </div>
+        <!--<div sec:authorize="hasAnyAuthority('Company')">
+            <a href="/listallemployees" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" >See Employees</a>
+            <a href="/registeremployees" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Add Employees</a>
+        </div>-->
+        <div sec:authorize="hasAnyAuthority('User')">
+            <a th:href="@{'homepage/addempjobs/'}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" >Add Jobs</a>
+           <!-- <a th:href="@{'/showJobList/'}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" >Show Job List</a>-->
+            <a th:href="@{'homepage/editempinfo/' + ${user.user_id}}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Edit Details</a>
+        </div>
+        <a href="/logout"  class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Logout</a>
+    </div>
+
+    <!-- Navbar on small screens + ${user.user_id}-->
+    <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 4</a>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="w3-container w3-red w3-center" style="padding:128px 16px">
+    <h1 class="w3-margin w3-jumbo">[[${#request.userPrincipal.principal.name}]]</h1>
+    <p class="w3-xlarge" sec:authentication="principal.authorities"> Roles </p>
+    <div class="search-container" sec:authorize="hasAnyAuthority('Company')">
+        <form action="/search" >
+            <input type="text" placeholder="Search.." name="keyword" th:value="${keyword}" required/>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <!---
+    <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Get Started</button>--->
+</header>
+
+<!-- First Grid -->
+
+<div class="w3-row-padding w3-padding-64 w3-container">
+    <div class="w3-content">
+        <div sec:authorize="hasAnyAuthority('User')">
+            <h2>About</h2>
+                <table class="w3-table w3-striped w3-white">
+                    <tr>
+                        <td><i class="fa fa-graduation-cap w3-text-blue w3-large"></i></td>
+                        <td>School</td>
+                        <td>[[${#request.userPrincipal.principal.School}]]</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa fa-graduation-cap w3-text-red w3-large"></i></td>
+                        <td>College</td>
+                        <td>[[${#request.userPrincipal.principal.College}]]</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa fa-graduation-cap w3-text-yellow w3-large"></i></td>
+                        <td>University</td>
+                        <td>[[${#request.userPrincipal.principal.University}]]</td>
+                    </tr>
+                </table>
+            </div>
+
+        <!--<div sec:authorize="hasAnyAuthority('Company')">
+            <h2>About</h2>
+            <table class="w3-table w3-striped w3-white">
+                <tr>
+                    <td><i class="fa fa-briefcase w3-text-blue w3-large"></i></td>
+                    <td>Company Type</td>
+                    <td>[[${#request.userPrincipal.principal.School}]]</td>
+                </tr>
+                <tr>
+                    <td><i class="fa fa-building w3-text-red w3-large"></i></td>
+                    <td>Location</td>
+                    <td>[[${#request.userPrincipal.principal.College}]]</td>
+                </tr>
+            </table>
+        </div>-->
+    <div sec:authorize="hasAnyAuthority('Admin')">
+        <div align="center">
+            <h1>Users List</h1>
+            <table border="1" cellpadding="10">
+                <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th><!--
+                     <th>Price</th>
+                     <th>Actions</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${listUsers}">
+                    <td th:text="${user.user_id}">User ID</td>
+                    <td th:text="${user.name}">Name</td>
+                    <td th:text="${user.email}">Email</td>
+                    <td th:text="${user.roles}">Made in</td><!--
+                     <td th:text="${product.price}">Price</td>-->
+                    <td>
+                         <a th:href="@{'/edit/' + ${user.user_id}}">Edit</a>
+                         &nbsp;&nbsp;&nbsp;
+                         <a th:href="@{'/delete/' + ${user.user_id}}">Delete</a>
+                     </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <div sec:authorize="hasAnyAuthority('Company')">
+            <div align="center">
+                <h1>Employee List</h1>
+                <table border="1" cellpadding="10">
+                    <thead>
+                    <th>Job ID</th>
+                    <th>Employee Name</th>
+                    <th>Job Role</th>
+                    <th>Company Name</th>
+                    <th>Start Date</th><
+                    <th>End Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="c : ${listjobs}">
+                        <td th:text="${c.id}">User ID</td>
+                        <td th:text="${c.user.name}">Price</td>
+                        <td th:text="${c.job_role}">Name</td>
+                        <td th:text="${c.company_name}">Email</td>
+                        <td th:text="${c.start_date}">Made in</td><
+                        <td th:text="${c.end_date}">Price</td>
+                        <td>
+                            &nbsp;&nbsp;&nbsp;
+                            <a th:href="@{'/deleteJob/' + ${c.id}}">Delete</a>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
+</div>
+
+<!-- Second Grid -->
+
+<div class="w3-row-padding w3-padding-64 w3-container">
+    <div class="w3-content">
+        <div align="center">
+        <div sec:authorize="hasAnyAuthority('User')">
+            <h1>Experiences</h1>
+            <table border="1" cellpadding="10">
+                <thead>
+                <th>Job ID</th>
+                <th>Job Role</th>
+                <th>Company Name</th>
+                <th>Start Date</th><
+                <th>End Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${jobs}">
+                    <td th:text="${c.id}">User ID</td>
+                    <td th:text="${c.job_role}">Name</td>
+                    <td th:text="${c.company_name}">Email</td>
+                    <td th:text="${c.start_date}">Made in</td><
+                    <td th:text="${c.end_date}">Price</td>
+                    <td>&nbsp;&nbsp;&nbsp;
+
+                        <a th:href="@{'/deleteJob/' + ${c.id}}">Delete</a>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+
+    </div>
+--->
+<!-- Second Grid -->
+<!--
+<div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+    <div class="w3-content">
+        <div sec:authorize="hasAnyAuthority('User')">
+            <div align="center">
+                <h1>Users List</h1>
+                <table border="1" cellpadding="10">
+                    <thead>
+                    <tr>
+                        <th>Job ID</th>
+                        <th>Job Role</th>
+                        <th>Company Name</th>
+                        <th>Start Date</th><
+                        <th>End Date</th>
+                     <th>Actions</th>-->
+                   <!-- </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${listJobs}">
+                        <td th:text="${user.jobs.id}">User ID</td>
+                        <td th:text="${user.jobs.job_role}">Name</td>
+                        <td th:text="${user.jobs.company_name}">Email</td>
+                        <td th:text="${user.jobs.start_date}">Made in</td><
+                        <td th:text="${user.jobs.end_date}">Price</td>
+                        <td>
+                            <a th:href="@{'/edit/' + ${user.jobs.id}}">Edit</a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a th:href="@{'/delete/' + ${user.jobs.id}}">Delete</a>
+                        </td>-->
+                 <!--   </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+-->
+            <!--
+<div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
+    <h1 class="w3-margin w3-xlarge">Quote of the day: live life</h1>
+</div>
+-->
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity">
+    <div class="w3-xlarge w3-padding-32">
+        <i class="fa fa-facebook-official w3-hover-opacity"></i>
+        <i class="fa fa-instagram w3-hover-opacity"></i>
+        <i class="fa fa-linkedin w3-hover-opacity"></i>
+    </div>
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">18101220</a></p>
+</footer>
+
+<script>
+    // Used to toggle the menu on small screens when clicking on the menu button
+    function myFunction() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+</script>
+</body>
+</html>
